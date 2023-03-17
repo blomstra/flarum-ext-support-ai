@@ -2,7 +2,8 @@
 
 namespace Blomstra\SupportAi;
 
-use Blomstra\SupportAi\Agent\Message;
+use Blomstra\SupportAi\Agent\Reply;
+use Blomstra\SupportAi\Message\Factory as Message;
 use Flarum\Post\CommentPost;
 use Flarum\Post\Post;
 use Flarum\User\User;
@@ -16,6 +17,7 @@ class Agent
     public function __construct(
         public readonly User $user,
         public readonly ?string $persona = null,
+        public readonly ?string $moderatingBehaviour = null,
         protected ?Client $client = null,
     ) {}
 
@@ -40,8 +42,8 @@ class Agent
         $messages->push(Message::buildFromPost($post));
 
         // Define the system role message to set the tone of voice.
-        if ($this->persona) {
-            $messages->prepend(Message::buildFromPersona($this));
+        if ($persona = Message::buildPersona($this)) {
+            $messages->prepend($persona);
         }
 
         $response = $this->client->chat()->create([
@@ -53,20 +55,16 @@ class Agent
 
         $respond = Arr::first($response->choices);
 
-        $reply = $respond->message->content;
-
-        if ($this->canMention) {
-            $reply = sprintf(
-                '@"%s"#p%u %s',
-                $post->user->display_name,
-                $post->id,
-                $reply
-            );
-        }
+        $reply = new Reply(
+            agent: $this,
+            reply: $respond->message->content,
+            shouldMention: $this->canMention,
+            inReplyTo: $post
+        );
 
         CommentPost::reply(
             discussionId: $post->discussion_id,
-            content: $reply,
+            content: $reply(),
             userId: $this->user->id,
             ipAddress: '127.0.0.1'
         )->save();

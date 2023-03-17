@@ -2,7 +2,8 @@
 
 namespace Blomstra\SupportAi;
 
-use Blomstra\SupportAi\Agent\Message;
+use Blomstra\SupportAi\Message\Factory;
+use Blomstra\SupportAi\Message\Message;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -33,7 +34,6 @@ class ClientProvider extends AbstractServiceProvider
     protected function getAgent(SettingsRepositoryInterface $settings, ExtensionManager $extensions): Agent
     {
         $username = $settings->get('blomstra-support-ai.username') ?? 'admin';
-        $persona = $settings->get('blomstra-support-ai.persona');
 
         /** @var UserRepository $users */
         $users = $this->container->make(UserRepository::class);
@@ -46,13 +46,14 @@ class ClientProvider extends AbstractServiceProvider
 
         $agent = new Agent(
             user: $user,
-            persona: $persona,
+            persona: $settings->get('blomstra-support-ai.persona'),
+            moderatingBehaviour: $settings->get('blomstra-support-ai.what-to-moderate'),
             client: $client
         );
 
         $agent->toggleMentioning($extensions->isEnabled('flarum-mentions'));
 
-        Message::$agent = $agent;
+        Factory::setAgent($agent);
 
         return $agent;
     }

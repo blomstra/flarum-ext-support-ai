@@ -19,8 +19,7 @@ class GenerateFirstReplies
     public function subscribe(Dispatcher $events): void
     {
         $events->listen(Posted::class, function (Posted $event) {
-            // Do not respond to itself or if client is inactive.
-            if ($this->agent->operationable() === false
+            if (! $this->agent->operationable()
                 || $this->agent->is($event->post->user)
             ) {
                 return;

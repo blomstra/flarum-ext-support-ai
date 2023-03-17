@@ -24,4 +24,9 @@ app.initializers.add('blomstra-support-ai', () => {
             label: app.translator.trans('blomstra-support-ai.admin.persona'),
             type: 'textarea',
         })
+        .registerSetting({
+            setting: 'blomstra-support-ai.what-to-moderate',
+            label: app.translator.trans('blomstra-support-ai.admin.what-to-moderate'),
+            type: 'textarea',
+        })
 });

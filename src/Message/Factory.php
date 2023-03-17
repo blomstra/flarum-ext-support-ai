@@ -1,43 +1,52 @@
 <?php
 
-namespace Blomstra\SupportAi\Agent;
+namespace Blomstra\SupportAi\Message;
 
 use Blomstra\SupportAi\Agent;
+use Blomstra\SupportAi\Agent\Role;
 use Flarum\Post\CommentPost;
 use Flarum\Post\Post;
 use Flarum\User\Guest;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 
-class Message implements Arrayable
+class Factory
 {
-    public static ?Agent $agent = null;
+    protected static ?Agent $agent = null;
 
-    public function __construct(
-        public Role $role,
-        public string $content
-    )
-    {}
-
-    public function toArray()
+    public static function buildPersona(Agent $agent): ?Message
     {
-        return [
-            'role' => $this->role->name,
-            'content' => str_replace(['\r\n', '\n', PHP_EOL], '', $this->content)
-        ];
-    }
+        $persona = $agent->persona;
+        $moderator = $agent->moderatingBehaviour;
 
-    public static function buildFromPersona(Agent $agent)
-    {
-        return new self(
+        if (! $persona && ! $moderator) return null;
+
+        $instructions = '';
+
+        // Combined instructions needs precise instructions
+        if ($persona && $moderator) {
+            $instructions .= <<<EOM
+You are tasked with reviewing posts made by people on a community. Your task is twofold, on one side you will review
+the text based on moderation instructions and on the other hand you will fulfill the role of an assistant.
+EOM;
+            $moderator = "here follow the instructions as a content moderator, in case you consider the content of the user to breach these instructions reply with 'FLAG: ' and the reason you consider this to breach the instructions: $moderator";
+            $persona = "Here follow the instructions as an assistant: $persona";
+        }
+
+        $instructions .= <<<EOM
+$moderator
+
+$persona
+EOM;
+        
+        return new Message(
             Role::assistant,
-            $agent->persona
+            $instructions
         );
     }
 
-    public static function buildFromPost(Post $post)
+    public static function buildFromPost(Post $post): Message
     {
-        return new self(
+        return new Message(
             static::$agent->is($post->user) ? Role::assistant : Role::user,
             $post->content
         );
@@ -76,5 +85,10 @@ class Message implements Arrayable
         $collect->each(fn (Post $post) => $collect->merge($post->mentionsPost ?? Collection::make()));
 
         return $collect->unique();
+    }
+
+    public static function setAgent(Agent $agent): void
+    {
+        static::$agent = $agent;
     }
 }
