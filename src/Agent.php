@@ -58,7 +58,7 @@ class Agent
         $choice = Arr::first($response->choices);
         $respond = $choice->message->content;
 
-        if (Str::startsWith('FLAG: ', $respond)) {
+        if (Str::startsWith($respond, 'FLAG: ')) {
             $flag = new Flag(
                 Str::after($respond, 'FLAG: '),
                 $post
