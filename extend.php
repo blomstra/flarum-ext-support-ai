@@ -13,4 +13,6 @@ return [
         ->register(ClientProvider::class),
 
     (new Flarum\Event)->subscribe(Listen\GenerateFirstReplies::class),
+
+    (new Flarum\Console)->command(Console\TrainAgentCommand::class),
 ];
