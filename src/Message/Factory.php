@@ -37,7 +37,7 @@ $moderator
 
 $persona
 EOM;
-        
+
         return new Message(
             Role::assistant,
             $instructions

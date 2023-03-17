@@ -2,8 +2,6 @@
 
 namespace Blomstra\SupportAi;
 
-use Blomstra\SupportAi\Message\Factory;
-use Blomstra\SupportAi\Message\Message;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -52,8 +50,6 @@ class ClientProvider extends AbstractServiceProvider
         );
 
         $agent->toggleMentioning($extensions->isEnabled('flarum-mentions'));
-
-        Factory::setAgent($agent);
 
         return $agent;
     }

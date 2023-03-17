@@ -7,12 +7,9 @@ use Blomstra\SupportAi\Event\Replying;
 use Flarum\Post\Post;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class Reply
+class Reply extends Action
 {
-    protected static ?Dispatcher $events = null;
-
     public function __construct(
-        protected readonly Agent $agent,
         protected readonly string $reply,
         protected readonly bool $shouldMention = false,
         protected readonly ?Post $inReplyTo = null,
@@ -34,7 +31,7 @@ class Reply
 
     protected function getReplyToMention(): ?string
     {
-        if (! $this->shouldMention || ! $this->inReplyTo) {
+        if (!$this->shouldMention || !$this->inReplyTo) {
             return null;
         }
 
@@ -43,10 +40,5 @@ class Reply
             $this->inReplyTo->user->display_name,
             $this->inReplyTo->id
         );
-    }
-
-    public static function setEventDispatcher(Dispatcher $events): void
-    {
-        static::$events = $events;
     }
 }
