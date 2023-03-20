@@ -1,0 +1,8 @@
+blomstra-support-ai:
+    admin:
+        setting:
+            api-key: API key
+            api-organisation: API organisation
+            username: Username the bot should pretend to be
+            respond-to-op: Allow Support AI to respond to discussion starter
+            respond-to-replies: Allow Support AI to respond to replies

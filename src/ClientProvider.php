@@ -45,7 +45,7 @@ class ClientProvider extends AbstractServiceProvider
         $agent = new Agent(
             user: $user,
             persona: $settings->get('blomstra-support-ai.persona'),
-            moderatingBehaviour: $settings->get('blomstra-support-ai.what-to-moderate'),
+            moderatingBehaviour: $settings->get('blomstra-support-ai.how-to-moderate'),
             client: $client
         );
 

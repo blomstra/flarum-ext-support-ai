@@ -6,27 +6,38 @@ app.initializers.add('blomstra-support-ai', () => {
         .for('blomstra-support-ai')
         .registerSetting({
             setting: 'blomstra-support-ai.openai-api-key',
-            label: app.translator.trans('blomstra-support-ai.admin.api-key'),
+            label: app.translator.trans('blomstra-support-ai.admin.setting.api-key'),
             type: 'input',
         })
         .registerSetting({
             setting: 'blomstra-support-ai.openai-api-organisation',
-            label: app.translator.trans('blomstra-support-ai.admin.api-organisation'),
+            label: app.translator.trans('blomstra-support-ai.admin.setting.api-organisation'),
             type: 'input',
         })
         .registerSetting({
             setting: 'blomstra-support-ai.username',
-            label: app.translator.trans('blomstra-support-ai.admin.username'),
+            label: app.translator.trans('blomstra-support-ai.admin.setting.username'),
             type: 'input',
         })
         .registerSetting({
             setting: 'blomstra-support-ai.persona',
-            label: app.translator.trans('blomstra-support-ai.admin.persona'),
+            label: app.translator.trans('blomstra-support-ai.admin.setting.persona'),
             type: 'textarea',
         })
         .registerSetting({
-            setting: 'blomstra-support-ai.what-to-moderate',
-            label: app.translator.trans('blomstra-support-ai.admin.what-to-moderate'),
+            setting: 'blomstra-support-ai.how-to-moderate',
+            label: app.translator.trans('blomstra-support-ai.admin.setting.how-to-moderate'),
             type: 'textarea',
         })
+
+        .registerPermission({
+            permission: 'discussion.supportAiRespondToOp',
+            label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-op'),
+            icon: 'fas fa-robot',
+        }, 'reply')
+        .registerPermission({
+            permission: 'discussion.supportAiRespondToReplies',
+            label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-replies'),
+            icon: 'fas fa-robot',
+        }, 'reply')
 });

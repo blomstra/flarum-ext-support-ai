@@ -2,10 +2,8 @@
 
 namespace Blomstra\SupportAi\Agent;
 
-use Blomstra\SupportAi\Agent;
 use Blomstra\SupportAi\Event\Replying;
 use Flarum\Post\Post;
-use Illuminate\Contracts\Events\Dispatcher;
 
 class Reply extends Action
 {
