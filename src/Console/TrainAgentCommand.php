@@ -14,7 +14,7 @@ class TrainAgentCommand extends Command
 
     public function handle(Agent $agent, Container $container, Agent\Training $training)
     {
-        if (! $agent->operationable()) {
+        if (! $agent->operational()) {
             $this->error('Client not operational.');
 
             return Command::FAILURE;

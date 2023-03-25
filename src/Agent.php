@@ -3,6 +3,7 @@
 namespace Blomstra\SupportAi;
 
 use Blomstra\SupportAi\Agent\Flag;
+use Blomstra\SupportAi\Agent\Model;
 use Blomstra\SupportAi\Agent\Reply;
 use Blomstra\SupportAi\Message\Factory as Message;
 use Flarum\Post\CommentPost;
@@ -15,15 +16,19 @@ use OpenAI\Client;
 class Agent
 {
     protected bool $canMention = false;
+    protected Model $model;
 
     public function __construct(
         public readonly User $user,
         public readonly ?string $persona = null,
         public readonly ?string $moderatingBehaviour = null,
         protected ?Client $client = null,
-    ) {}
+        string $model = null,
+    ) {
+        $this->model = $model ? Model::from($model) : Model::gpt_3_5_turbo;
+    }
 
-    public function operationable(): bool
+    public function operational(): bool
     {
         return $this->client !== null;
     }
@@ -51,6 +56,7 @@ class Agent
         $response = $this->client->chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => $messages,
+            'user' => "user-$post->user_id"
         ]);
 
         if (empty($response->choices)) return;
@@ -76,7 +82,8 @@ class Agent
                 discussionId: $post->discussion_id,
                 content: $reply(),
                 userId: $this->user->id,
-                ipAddress: '127.0.0.1'
+                ipAddress: '127.0.0.1',
+                actor: $this->user
             )->save();
         }
     }
@@ -86,5 +93,10 @@ class Agent
         $this->canMention = $mention;
 
         return $this;
+    }
+
+    public function canMention(): bool
+    {
+        return $this->canMention;
     }
 }

@@ -64,16 +64,16 @@ EOM;
             $messages->push(self::buildFromPost($post->discussion->firstPost));
         }
 
-        if ($post->discussion->comment_count < 20) {
+//        if ($post->discussion->comment_count < 20) {
             $post->discussion->comments()
                 ->whereVisibleTo(new Guest)
                 ->whereKeyNot($post)
                 ->when($post->discussion->firstPost, fn ($query, $firstPost) => $query->whereKeyNot($firstPost))
                 ->each(fn (CommentPost $comment) => $messages->push(self::buildFromPost($comment)));
-        } else {
-            static::buildFromMentions($post)
-                ->each(fn (CommentPost $comment) => $messages->push(self::buildFromPost($comment)));
-        }
+//        } else {
+//            static::buildFromMentions($post)
+//                ->each(fn (CommentPost $comment) => $messages->push(self::buildFromPost($comment)));
+//        }
 
         return $messages;
     }

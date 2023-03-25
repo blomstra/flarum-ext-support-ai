@@ -34,9 +34,11 @@ class Reply extends Action
         }
 
         return sprintf(
-            '@"%s"#p%u',
+            '@"%s"#p%u @"%s"#%u',
             $this->inReplyTo->user->display_name,
-            $this->inReplyTo->id
+            $this->inReplyTo->id,
+            $this->inReplyTo->user->display_name,
+            $this->inReplyTo->user_id
         );
     }
 }

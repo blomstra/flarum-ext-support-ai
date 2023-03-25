@@ -46,7 +46,8 @@ class ClientProvider extends AbstractServiceProvider
             user: $user,
             persona: $settings->get('blomstra-support-ai.persona'),
             moderatingBehaviour: $settings->get('blomstra-support-ai.how-to-moderate'),
-            client: $client
+            client: $client,
+            model: $settings->get('blomstra-support-ai.model')
         );
 
         $agent->toggleMentioning($extensions->isEnabled('flarum-mentions'));
