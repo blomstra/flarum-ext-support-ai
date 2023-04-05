@@ -7,7 +7,7 @@ blomstra-support-ai:
             username: Username the bot should pretend to be
             persona: Declare a persona for the bot
             how-to-moderate: Instructions how the bot should moderate
-            respond-to-op: Allow Support AI to respond to discussion starter
+            respond-to-op: Allow Support AI to respond to first posts (OP)
             respond-to-replies: Allow Support AI to respond to replies
             respond-to-mentions: Allow Support AI to respond to mentions
         permission:

@@ -1,9 +1,11 @@
 import app from 'flarum/admin/app';
+import SettingDropdown from 'flarum/admin/components';
 
 app.initializers.add('blomstra-support-ai', () => {
 
-    app.extensionData
-        .for('blomstra-support-ai')
+    let extensionData = app.extensionData.for('blomstra-support-ai');
+
+    extensionData
         .registerSetting({
             setting: 'blomstra-support-ai.openai-api-key',
             label: app.translator.trans('blomstra-support-ai.admin.setting.api-key'),
@@ -40,9 +42,20 @@ app.initializers.add('blomstra-support-ai', () => {
         })
 
         .registerPermission({
-            permission: 'discussion.supportAiRespondToOp',
+            // permission: 'discussion.supportAiRespondToOp',
             label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-op'),
             icon: 'fas fa-robot',
+            setting: () => {
+                return SettingDropdown.component({
+                    defaultLabel: 'no one',
+                    key: 'discussion.supportAiRespondToOp',
+                    options: [
+                        { value: '-1', label: 'no one' },
+                        { value: '10', label: app.translator.trans('core.admin.permissions_controls.allow_ten_minutes_button') },
+                        { value: 'reply', label: app.translator.trans('core.admin.permissions_controls.allow_until_reply_button') },
+                    ],
+                });
+            },
         }, 'reply')
         .registerPermission({
             permission: 'discussion.supportAiRespondToReplies',
@@ -54,4 +67,5 @@ app.initializers.add('blomstra-support-ai', () => {
             label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-mentions'),
             icon: 'fas fa-robot',
         }, 'reply')
-});
+})
+;

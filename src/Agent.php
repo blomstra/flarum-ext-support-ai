@@ -54,7 +54,7 @@ class Agent
         }
 
         $response = $this->client->chat()->create([
-            'model' => 'gpt-3.5-turbo',
+            'model' => $this->model->value,
             'messages' => $messages,
             'user' => "user-$post->user_id"
         ]);
