@@ -1,4 +1,8 @@
-blomstra-support-ai:
+flarum-com-ai:
+    common:
+        edit-user-modal:
+            enable-button-label: Enable AI
+            disable-button-label: Disable AI
     admin:
         setting:
             api-key: API key
@@ -10,7 +14,5 @@ blomstra-support-ai:
             respond-to-op: Allow Support AI to respond to discussion starter
             respond-to-replies: Allow Support AI to respond to replies
             respond-to-mentions: Allow Support AI to respond to mentions
-        permission:
-            respond-to-op: Respond to discussion starter from these groups
-            respond-to-replies: Respond to replies from these groups
-            respond-to-mentions: Respond when mentioned by these groups
+        permissions:
+            can-manage: Manage users as AI

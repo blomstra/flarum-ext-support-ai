@@ -1,17 +1,24 @@
 import app from 'flarum/admin/app';
+import User from './../common/extend/User';
+import UserModal from './../common/extend/UserModal';
 
-app.initializers.add('blomstra-support-ai', () => {
+app.initializers.add('flarum-com-ai', () => {
 
     app.extensionData
-        .for('blomstra-support-ai')
+        .for('flarum-com-ai')
+        .registerPermission({
+            icon: 'fas fa-tag',
+            label: app.translator.trans('flarum-com-ai.admin.permissions.can-manage'),
+            permission: 'ai.manage',
+        }, 'moderate', 95)
         .registerSetting({
-            setting: 'blomstra-support-ai.openai-api-key',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.api-key'),
+            setting: 'flarum-com-ai.openai-api-key',
+            label: app.translator.trans('flarum-com-ai.admin.setting.api-key'),
             type: 'input',
         })
         .registerSetting({
-            setting: 'blomstra-support-ai.model',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.model'),
+            setting: 'flarum-com-ai.model',
+            label: app.translator.trans('flarum-com-ai.admin.setting.model'),
             type: 'select',
             options: {
                 'gpt-4': 'GPT-4',
@@ -19,39 +26,11 @@ app.initializers.add('blomstra-support-ai', () => {
             }
         })
         .registerSetting({
-            setting: 'blomstra-support-ai.openai-api-organisation',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.api-organisation'),
+            setting: 'flarum-com-ai.openai-api-organisation',
+            label: app.translator.trans('flarum-com-ai.admin.setting.api-organisation'),
             type: 'input',
-        })
-        .registerSetting({
-            setting: 'blomstra-support-ai.username',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.username'),
-            type: 'input',
-        })
-        .registerSetting({
-            setting: 'blomstra-support-ai.persona',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.persona'),
-            type: 'textarea',
-        })
-        .registerSetting({
-            setting: 'blomstra-support-ai.how-to-moderate',
-            label: app.translator.trans('blomstra-support-ai.admin.setting.how-to-moderate'),
-            type: 'textarea',
-        })
+        });
 
-        .registerPermission({
-            permission: 'discussion.supportAiRespondToOp',
-            label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-op'),
-            icon: 'fas fa-robot',
-        }, 'reply')
-        .registerPermission({
-            permission: 'discussion.supportAiRespondToReplies',
-            label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-replies'),
-            icon: 'fas fa-robot',
-        }, 'reply')
-        .registerPermission({
-            permission: 'discussion.supportAiRespondToMentions',
-            label: app.translator.trans('blomstra-support-ai.admin.permission.respond-to-mentions'),
-            icon: 'fas fa-robot',
-        }, 'reply')
+    // User();
+    UserModal();
 });

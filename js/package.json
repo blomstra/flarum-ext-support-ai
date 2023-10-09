@@ -1,5 +1,5 @@
 {
-  "name": "@blomstra/support-ai",
+  "name": "@flarum/ai",
   "private": true,
   "version": "0.0.0",
   "prettier": "@flarum/prettier-config",
